@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "ESNext",
+    "target": "ES6",
+    "lib": ["DOM", "ES2018"],
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./dist"
+  },
+  "include": ["**/*.ts"]
+}
