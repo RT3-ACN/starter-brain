@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "starter-brain"
+version = "0.1.0"
+description = "A starter-pack memory system — file-based knowledge graph for humans and AI"
+requires-python = ">=3.10"
+dependencies = ["pyyaml>=6.0"]
+
+[project.optional-dependencies]
+search = ["numpy", "sentence-transformers", "hnswlib"]
+mcp = ["mcp"]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+brain = "starter_brain.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["starter_brain"]
+artifacts = ["templates/**"]

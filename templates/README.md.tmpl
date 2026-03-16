@@ -1,0 +1,29 @@
+# Knowledge Graph
+
+Created by [starter-brain](https://github.com/SolanaFox2/starter-brain) on ${date}.
+
+## Format
+
+Every entity is a markdown file in `entities/{type}/{slug}.md` with YAML frontmatter.
+
+### Required frontmatter fields
+- `type` — entity type (topic, insight, research, decision, pattern, person, project, hypothesis, or any string)
+- `id` — unique identifier in `{type}/{slug}` format
+- `name` — human-readable name
+- `created` / `updated` — ISO dates
+- `author` — who created it
+- `status` — active, draft, validated, or archived
+
+### Optional fields
+- `confidence` — 0-100
+- `importance` — 1-10 (default 5)
+- `tags` — free-form list
+- `relations` — typed links to other entities
+
+### Relation types
+REFERENCES, INFORMS, DERIVED_FROM, SUPERSEDED_BY, CONTRADICTS, DEPENDS_ON, PART_OF, USES_TOPIC, CREATED_BY (any string accepted)
+
+### Episodes
+Daily logs in `episodes/YYYY-MM-DD.md`. Format: `## author | HH:MM | type | importance:N`
+
+Open this folder as an Obsidian vault to browse your knowledge graph visually.
