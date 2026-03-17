@@ -120,6 +120,62 @@ Pulls `sentence-transformers` + `hnswlib` (~2GB). Core install is ~5MB (pyyaml o
 - **Zero cloud dependencies** — everything runs locally. No API keys needed for core features.
 - **MCP via stdio** — no network ports opened. Safe for corporate environments.
 
+## What to Build Next
+
+Once you have a brain running, here are natural next steps roughly ordered by complexity:
+
+### Week 1 — Build the habit
+- **Log episodes daily.** Even one line: `brain episode "what I worked on today"`. The value compounds over time.
+- **Create entities for projects you're actively working on.** Link them to topics and decisions as you go.
+- **Use `brain map` to spot gaps.** Orphan entities with no relations are knowledge that isn't connected to anything — either link them or ask why they exist.
+
+### Week 2 — Connect Claude Code
+- **Let Claude save knowledge during conversations.** With MCP active, tell Claude "save this to the brain" when you learn something worth keeping. It uses `brain_save_entity` and `brain_episode` automatically.
+- **Start conversations with context.** Add a line to your project's CLAUDE.md: "Check the brain (`brain_search`) for prior decisions before proposing new approaches."
+- **Review what Claude saves.** AI-authored entities should be reviewed. Check `brain list` and scan for anything that's wrong or low-value.
+
+### Week 3 — Automate maintenance
+- **Write a cron job** that runs `brain health` and `brain index` daily. Catch integrity issues early.
+- **Add `brain link`** to your post-session workflow so Obsidian wikilinks stay current.
+- **Build a session-start script** that runs `brain search` for the topic you're about to work on and dumps context into your terminal.
+
+### Beyond — Extension ideas
+- **Semantic search** — `pip install starter-brain[search]` adds embedding-based similarity. Good for "what do I know that's related to X?" when keywords aren't enough.
+- **Episode consolidation** — Write a script that reads episode logs and creates/updates entities from recurring themes. Turns daily notes into structured knowledge.
+- **Multi-brain sync** — Run separate brains for different domains (work, personal, research). Build a merge tool that links entities across brains without copying content.
+- **Custom entity types** — The type system is open. Add `meeting`, `bug`, `experiment`, `contact`, `tool` — whatever maps to how you think.
+- **Contradiction detection** — Scan relations for entities that `CONTRADICTS` each other or where confidence scores diverge. Surface these for review.
+- **Dashboard** — Build a simple web UI over `brain_stats` + `brain_mind_map` to visualize your knowledge graph outside Obsidian.
+
+## Further Reading
+
+Repos and resources worth studying if you want to go deeper on memory, knowledge graphs, and AI orchestration:
+
+### Memory & Knowledge Graphs
+| Repo | What it does | Why it's interesting |
+|---|---|---|
+| [Graphiti](https://github.com/getzep/graphiti) | Temporal knowledge graph for AI agents | Episode-based memory with time decay, contradiction detection, entity deduplication |
+| [Mem0](https://github.com/mem0ai/mem0) | Memory layer for AI apps | Automatic memory extraction from conversations, user/session/agent memory scopes |
+| [Cognee](https://github.com/topoteretes/cognee) | Knowledge graph from unstructured data | GraphRAG pipeline, entity extraction, relationship inference |
+| [Smart Connections](https://github.com/brianpetro/obsidian-smart-connections) | Obsidian plugin for semantic links | Embedding-based "find related notes" inside Obsidian |
+| [Khoj](https://github.com/khoj-ai/khoj) | AI second brain | Search across markdown/org files, chat with your notes, self-hosted |
+
+### Agent Orchestration
+| Repo | What it does | Why it's interesting |
+|---|---|---|
+| [CAMEL-AI](https://github.com/camel-ai/camel) | Multi-agent framework | Role-playing agents, task decomposition, the engine behind OASIS/MiroFish |
+| [CrewAI](https://github.com/crewAIInc/crewAI) | Multi-agent task orchestration | Agent roles, delegation, sequential/parallel task execution |
+| [AutoGen](https://github.com/microsoft/autogen) | Multi-agent conversation framework | Conversational agents that collaborate, code execution, human-in-the-loop |
+| [LangGraph](https://github.com/langchain-ai/langgraph) | Stateful agent workflows | Graph-based agent orchestration, persistence, human approval gates |
+| [Paperclip](https://github.com/ArcadeAI/paperclip) | Agent safety patterns | Budget hard-stops, task ancestry, heartbeat protocols — patterns for agents you can trust |
+
+### MCP (Model Context Protocol)
+| Repo | What it does | Why it's interesting |
+|---|---|---|
+| [MCP Specification](https://github.com/modelcontextprotocol/specification) | The protocol spec | How tools, resources, and prompts are exposed to AI models |
+| [MCP Servers](https://github.com/modelcontextprotocol/servers) | Reference server implementations | Filesystem, GitHub, Slack, PostgreSQL — patterns for building your own |
+| [Awesome MCP Servers](https://github.com/punkpeye/awesome-mcp-servers) | Curated list | Find existing MCP servers before building your own |
+
 ## Development
 
 ```bash
