@@ -19,4 +19,6 @@ brain = "starter_brain.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["starter_brain"]
-artifacts = ["templates/**"]
+
+[tool.hatch.build.targets.sdist]
+include = ["starter_brain/**", "templates/**", "tests/**", "README.md", "LICENSE", "pyproject.toml"]

@@ -129,9 +129,9 @@ def handle_brain_stats(brain: Brain) -> dict:
 def serve(knowledge_dir: str):
     """Start the MCP server."""
     try:
-        from mcp.server import Server
+        from mcp.server import Server, InitializationOptions
         from mcp.server.stdio import stdio_server
-        from mcp.types import Tool, TextContent
+        from mcp.types import Tool, TextContent, ServerCapabilities
     except ImportError:
         print("MCP server requires the mcp package. Install with: pip install starter-brain[mcp]", file=sys.stderr)
         sys.exit(1)
@@ -141,6 +141,11 @@ def serve(knowledge_dir: str):
     kdir = Path(knowledge_dir)
     brain = Brain(kdir)
     server = Server("starter-brain")
+    init_options = InitializationOptions(
+        server_name="starter-brain",
+        server_version="0.1.0",
+        capabilities=ServerCapabilities(tools={}),
+    )
 
     @server.list_tools()
     async def list_tools():
@@ -199,6 +204,6 @@ def serve(knowledge_dir: str):
 
     async def run():
         async with stdio_server() as (read_stream, write_stream):
-            await server.run(read_stream, write_stream)
+            await server.run(read_stream, write_stream, init_options)
 
     asyncio.run(run())

@@ -1,0 +1,43 @@
+# Knowledge Graph
+
+This project has a file-based knowledge graph at `knowledge/`.
+
+## MCP Tools Available
+
+If the `starter-brain` MCP server is configured, you have these tools:
+
+- `brain_search` — keyword search across all entities
+- `brain_save_entity` — create or update an entity (type, slug, name, tags, relations, body)
+- `brain_entity` — read a specific entity by its ID (e.g., `topics/my-topic`)
+- `brain_mind_map` — explore relationships from a seed entity (returns nodes + edges)
+- `brain_episode` — log a session reflection or learning
+- `brain_stats` — get counts by type, total relations
+
+## When to Save Knowledge
+
+Save entities when you learn something that would be useful in future conversations:
+- Decisions and their rationale
+- Project context and architecture
+- Patterns and insights discovered
+- People and their roles/expertise
+- Research findings
+
+## Entity Format
+
+Entities are markdown files with YAML frontmatter:
+- **Types:** topic, insight, decision, pattern, person, project, research, hypothesis
+- **ID format:** `{plural_type}/{slug}` (e.g., `topics/api-design`, `decisions/use-postgres`)
+- **Relations:** `[{type: "relates-to", target: "topics/other"}]`
+
+## CLI Commands
+
+```bash
+brain list                    # all entities
+brain list topic              # filter by type
+brain search "query"          # keyword search
+brain show topics/my-topic    # read entity
+brain create topic my-slug --name "My Topic"
+brain episode "What I learned today"
+brain health                  # check integrity
+brain map topics/my-topic     # show relationships
+```

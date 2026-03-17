@@ -7,3 +7,5 @@ build/
 .search/
 node_modules/
 main.js
+*.private
+.pytest_cache/

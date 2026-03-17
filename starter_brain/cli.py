@@ -19,14 +19,15 @@ from starter_brain.search.text_search import text_search
 
 
 def _get_templates_dir() -> Path:
+    # First check inside the package (pip install)
+    pkg_path = Path(__file__).parent / "templates"
+    if pkg_path.exists():
+        return pkg_path
+    # Fallback to dev layout (repo root)
     dev_path = Path(__file__).parent.parent / "templates"
     if dev_path.exists():
         return dev_path
-    try:
-        from importlib.resources import files
-        return Path(str(files("starter_brain").joinpath("templates")))
-    except Exception:
-        return dev_path
+    return pkg_path
 
 
 TEMPLATES_DIR = _get_templates_dir()
@@ -56,6 +57,12 @@ def cmd_init(args):
         (kdir / "README.md").write_text(tmpl.substitute(date=today, author=author))
     else:
         (kdir / "README.md").write_text(f"# Knowledge Graph\nCreated {today} by {author}\n")
+
+    # Create CLAUDE.md for Claude Code integration
+    claude_tmpl = TEMPLATES_DIR / "CLAUDE.md.tmpl"
+    if claude_tmpl.exists():
+        claude_md = Template(claude_tmpl.read_text()).substitute(date=today, author=author)
+        (kdir / "CLAUDE.md").write_text(claude_md)
 
     brain = Brain(kdir)
     seeds_dir = TEMPLATES_DIR / "seeds"
