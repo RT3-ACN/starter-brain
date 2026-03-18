@@ -4,6 +4,8 @@ A file-based knowledge graph for humans and AI.
 
 Your knowledge lives as markdown files with YAML frontmatter. Browse it in Obsidian. Let Claude Code read and write to it via MCP. Both human and AI contributions live in the same graph.
 
+---
+
 ## Install
 
 ```bash
@@ -15,17 +17,55 @@ For Claude Code MCP integration:
 pip install "starter-brain[mcp]"
 ```
 
+---
+
 ## Quick Start
 
+**1. Initialize**
 ```bash
-# Initialize a new knowledge graph
-brain init ./knowledge --author yourname
-
-# Connect to Claude Code (adds MCP to ~/.claude/mcp.json)
-brain init ./knowledge --author yourname --with-mcp
+brain init ~/knowledge --author yourname --with-mcp
 ```
 
-Open `knowledge/` as an Obsidian vault. Done.
+This creates your `knowledge/` directory, seeds it with starter entities and patterns, adds a `CLAUDE.md` with instructions for Claude, and registers the MCP server with Claude Code.
+
+**2. Open in Obsidian** (optional but recommended)
+
+Open `~/knowledge` as a vault. Your entities become browsable nodes with visual link graphs.
+
+**3. Start your first session**
+
+Open Claude Code from any project directory and ask:
+```
+Check the brain for any context on [what you're working on], then let's get started.
+```
+
+Claude now has access to your brain via MCP and will search it automatically.
+
+**4. End your first session**
+
+Ask Claude:
+```
+Log what we worked on and decided today to the brain.
+```
+
+Then run:
+```bash
+brain index && brain link
+```
+
+That's the loop. Orient → work → capture. The brain compounds over time.
+
+---
+
+## The Core Habit
+
+The brain is only as useful as what you put in it. Three things make it work:
+
+1. **Check before starting** — ask Claude to search the brain at the start of any substantive session
+2. **Capture decisions with reasoning** — not just what was decided, but why, and what alternatives were rejected
+3. **Log episodes** — even one sentence per session. `brain episode "what I worked on today"`. The compounding is real.
+
+Your seeds include two patterns (`session-workflow` and `decision-capture`) that explain this in detail.
 
 ## What You Get
 

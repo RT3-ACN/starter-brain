@@ -1,29 +1,102 @@
 # Knowledge Graph
 
-Created by [starter-brain](https://github.com/starter-brain/starter-brain) on ${date}.
+Created ${date} by ${author}.
 
-## Format
+This is a file-based knowledge graph. Each entity is a markdown file in `entities/{type}/{slug}.md`. Browse it in Obsidian. Claude Code reads and writes to it via MCP. Both human and AI contributions live in the same graph.
 
-Every entity is a markdown file in `entities/{type}/{slug}.md` with YAML frontmatter.
+---
 
-### Required frontmatter fields
-- `type` — entity type (topic, insight, research, decision, pattern, person, project, hypothesis, or any string)
-- `id` — unique identifier in `{type}/{slug}` format
-- `name` — human-readable name
-- `created` / `updated` — ISO dates
-- `author` — who created it
-- `status` — active, draft, validated, or archived
+## How to Use This Brain
 
-### Optional fields
-- `confidence` — 0-100
-- `importance` — 1-10 (default 5)
-- `tags` — free-form list
-- `relations` — typed links to other entities
+**The loop:** Orient at the start of a session → do your work → capture decisions and learnings at the end.
 
-### Relation types
-REFERENCES, INFORMS, DERIVED_FROM, SUPERSEDED_BY, CONTRADICTS, DEPENDS_ON, PART_OF, USES_TOPIC, CREATED_BY (any string accepted)
+Ask Claude to check the brain before starting: *"Search the brain for context on [project/topic] before we begin."*
 
-### Episodes
-Daily logs in `episodes/YYYY-MM-DD.md`. Format: `## author | HH:MM | type | importance:N`
+Ask Claude to save at the end: *"Log today's decisions and learnings to the brain."*
 
-Open this folder as an Obsidian vault to browse your knowledge graph visually.
+Then run:
+```bash
+brain index && brain link
+```
+
+---
+
+## Entity Types
+
+| Type | Use for |
+|------|---------|
+| `project` | Active work — context, status, deliverables, open decisions |
+| `decision` | Choices made with rationale and alternatives considered |
+| `pattern` | Reusable approaches that worked — when to apply them again |
+| `insight` | Non-obvious findings — what changed in how you understand something |
+| `person` | Stakeholders and collaborators — what you need to work with them |
+| `research` | External findings, benchmarks, competitive intel |
+| `topic` | Concepts that connect related entities — use as hubs |
+| `hypothesis` | Ideas being tested — what would prove or disprove them |
+
+---
+
+## CLI Quick Reference
+
+```bash
+brain list                         # all entities
+brain list project                 # filter by type
+brain search "query"               # keyword search
+brain show projects/my-project     # read an entity
+brain create project slug --name "Name"
+brain episode "What I worked on, decided, and learned today"
+brain health                       # validate integrity
+brain index && brain link          # rebuild after writes
+brain map projects/my-project      # explore relationships
+```
+
+---
+
+## What Makes a Good Entity
+
+- **Specific** — not "notes on X" but the actual insight, decision, or context
+- **Why, not just what** — especially for decisions: capture reasoning and alternatives
+- **Connected** — every entity should have at least one relation; orphans are a signal of low-value capture
+- **Dense, not exhaustive** — if it needs a full doc, link to the doc
+
+---
+
+## Entity Format
+
+```yaml
+---
+type: decision
+id: decisions/my-decision
+name: My Decision
+created: 2026-03-18
+updated: 2026-03-18
+author: yourname
+status: active          # active | draft | archived | superseded
+confidence: 85          # 0–100
+importance: 7           # 1–10
+tags: [project-name, topic]
+relations:
+  - type: INFORMS
+    target: projects/my-project
+---
+
+## Decision
+[What was chosen]
+
+## Rationale
+[Why this over alternatives]
+
+## Related
+- INFORMS: [[projects/my-project|my-project]]
+```
+
+---
+
+## Keeping It Healthy
+
+The brain degrades if you don't maintain it. Periodically:
+- Run `brain health` to find broken links and orphans
+- Archive stale entities (`status: archived`) rather than deleting
+- Update project entities when status changes — stale project entities are worse than none
+
+A small, dense, well-maintained brain beats a large, noisy one.

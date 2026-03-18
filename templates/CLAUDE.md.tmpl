@@ -2,42 +2,116 @@
 
 This project has a file-based knowledge graph at `knowledge/`.
 
+---
+
+## Your Role
+
+You are a knowledge collaborator. The brain persists context across sessions — read it before starting work, write to it when something worth keeping is discovered. A well-maintained brain lets you pick up exactly where you left off. A noisy brain slows everything down.
+
+---
+
+## Session Start — Always Do This
+
+Before starting any substantive work, orient yourself:
+
+```
+brain_search "project or topic name"
+brain_entity "projects/relevant-project"
+```
+
+Check recent episodes too — they capture what happened last session. Don't ask the user to re-explain context you can find yourself.
+
+---
+
+## When to Save
+
+**Save** when the information would be useful in a future session that has no memory of this one:
+- A decision was made and the reasoning matters later
+- New project context was established (scope, constraints, stakeholders)
+- A pattern was discovered that applies beyond this task
+- A person's role, preferences, or working style were clarified
+- Research findings that will inform future work
+
+**Don't save:**
+- Ephemeral task status or in-progress work (use tasks for that)
+- Information already visible in the codebase or documentation
+- Step-by-step actions you just took
+- Anything that expires within days
+
+When in doubt: ask "Would this save meaningful time or prevent a mistake in a future session that has no memory of today?"
+
+---
+
+## Entity Type Guide
+
+| Type | Use for | Key question to answer |
+|------|---------|----------------------|
+| `project` | Active work with deliverables, timeline, status | What does someone need to know to pick this up? |
+| `decision` | Choices made with rationale | Why this over alternatives? |
+| `pattern` | Reusable approaches that worked | When should this be applied again? |
+| `insight` | Non-obvious findings worth remembering | What changed in how you understand something? |
+| `person` | Stakeholders, collaborators, clients | What do I need to know to work with them effectively? |
+| `research` | External findings, benchmarks, competitive intel | What's the source and what does it inform? |
+| `topic` | Concepts that connect related entities | Use as a hub — not a destination |
+| `hypothesis` | Ideas being tested | What would prove or disprove this? |
+
+---
+
+## What Makes a Good Entity
+
+**Good:** Specific, captures *why* not just *what*, contains context that isn't obvious from the code or docs, stays useful after the context shifts.
+
+**Bad:** Vague ("we discussed X"), repeats what you could find by reading a file, too long (dense > exhaustive), status never updated.
+
+Use `read/write` the entity body like a document, not a transcript.
+
+---
+
+## Session End — Always Do This
+
+Before closing, log what happened:
+```
+brain_episode "What was worked on, what was decided, what was learned"
+```
+
+Then check: did any decision, project context, or pattern change that needs a saved entity updated?
+
+---
+
+## After Writing to Brain
+
+After any `brain_save_entity` calls, run:
+```bash
+brain index && brain link
+```
+
+This keeps search and Obsidian wikilinks current.
+
+---
+
 ## MCP Tools Available
 
-If the `starter-brain` MCP server is configured, you have these tools:
+| Tool | When to use |
+|------|------------|
+| `brain_search` | Find relevant entities by keyword — use at session start |
+| `brain_entity` | Read a specific entity by ID |
+| `brain_save_entity` | Create or update an entity |
+| `brain_episode` | Log a session note or learning |
+| `brain_mind_map` | Explore relationships from a seed entity |
+| `brain_stats` | Get a count overview of the brain |
 
-- `brain_search` — keyword search across all entities
-- `brain_save_entity` — create or update an entity (type, slug, name, tags, relations, body)
-- `brain_entity` — read a specific entity by its ID (e.g., `topics/my-topic`)
-- `brain_mind_map` — explore relationships from a seed entity (returns nodes + edges)
-- `brain_episode` — log a session reflection or learning
-- `brain_stats` — get counts by type, total relations
+---
 
-## When to Save Knowledge
-
-Save entities when you learn something that would be useful in future conversations:
-- Decisions and their rationale
-- Project context and architecture
-- Patterns and insights discovered
-- People and their roles/expertise
-- Research findings
-
-## Entity Format
-
-Entities are markdown files with YAML frontmatter:
-- **Types:** topic, insight, decision, pattern, person, project, research, hypothesis
-- **ID format:** `{plural_type}/{slug}` (e.g., `topics/api-design`, `decisions/use-postgres`)
-- **Relations:** `[{type: "relates-to", target: "topics/other"}]`
-
-## CLI Commands
+## CLI Reference
 
 ```bash
-brain list                    # all entities
-brain list topic              # filter by type
-brain search "query"          # keyword search
-brain show topics/my-topic    # read entity
-brain create topic my-slug --name "My Topic"
+brain list                        # all entities
+brain list project                # filter by type
+brain search "query"              # keyword search
+brain show projects/my-project    # read entity
+brain create project my-project --name "My Project"
 brain episode "What I learned today"
-brain health                  # check integrity
-brain map topics/my-topic     # show relationships
+brain health                      # validate integrity
+brain index && brain link         # rebuild after writes
+brain map projects/my-project     # show relationships
 ```
