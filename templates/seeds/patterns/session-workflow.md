@@ -47,6 +47,8 @@ Then ask: did anything change that needs a saved entity updated? New decision? P
 
 Run: `brain index && brain link`
 
+If you maintain diagrams or process docs built from source files, run a staleness check before closing — see [[patterns/diagram-freshness|diagram-freshness]].
+
 ## Why This Matters
 
 The brain only accumulates value if you write to it. Most of the value is actually in the act of writing — it forces clarity about what you decided and why. The retrieval is almost secondary.
@@ -59,3 +61,5 @@ The brain only accumulates value if you write to it. Most of the value is actual
 
 ## Related
 - INFORMS: [[patterns/decision-capture|decision-capture]]
+- INFORMS: [[patterns/diagram-freshness|diagram-freshness]]
+- INFORMS: [[patterns/auto-memory|auto-memory]]

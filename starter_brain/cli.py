@@ -271,12 +271,13 @@ def _load_brainrc(kdir: Path) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(prog="brain", description="starter-brain knowledge graph")
-    parser.add_argument("--dir", default="./knowledge", help="Path to knowledge/ directory")
+    _default_dir = str(Path("~/knowledge").expanduser())
+    parser.add_argument("--dir", default=_default_dir, help="Path to knowledge/ directory")
     sub = parser.add_subparsers(dest="command")
 
     # Shared parent with --dir for subcommands that need it
     dir_parent = argparse.ArgumentParser(add_help=False)
-    dir_parent.add_argument("--dir", default="./knowledge", help="Path to knowledge/ directory")
+    dir_parent.add_argument("--dir", default=_default_dir, help="Path to knowledge/ directory")
 
     p_init = sub.add_parser("init", help="Initialize a new brain")
     p_init.add_argument("path", nargs="?", help="Path for knowledge/ directory")

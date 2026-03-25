@@ -52,7 +52,7 @@ class Brain:
     """Interface to a knowledge/ directory."""
 
     def __init__(self, knowledge_dir: str | Path):
-        self.knowledge_dir = Path(knowledge_dir)
+        self.knowledge_dir = Path(knowledge_dir).expanduser()
         self.entities_dir = self.knowledge_dir / "entities"
 
     def _entity_path(self, entity_id: str) -> Path:

@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.0 — 2026-03-25
+
+### New seed patterns
+- `patterns/diagram-freshness` — `sources:` field convention + audit script pattern for detecting stale process docs and diagrams. Three-layer system: data (frontmatter), detection (mtime comparison), trigger (session integration).
+- `patterns/auto-memory` — Four-type persistent memory layer (user, feedback, project, reference) with MEMORY.md index. Persists *how to work with this person* across sessions, compounding faster than entity-level knowledge.
+
+### Updated seeds
+- `patterns/session-workflow` — capture phase now references diagram staleness check and links to `diagram-freshness` and `auto-memory` patterns.
+
+### Updated templates
+- `CLAUDE.md.tmpl` — added auto-memory type guide (user/feedback/project/reference) and diagram staleness check instructions to the session-end workflow.
+
+### Updated docs
+- README "What to Build Next" — added Week 3 diagram staleness entry and new Week 4 section on skills/hook orchestration layer (session-start hook, session-close skill, auto-memory layer, PostToolUse hooks).
+
 ## 0.1.0 — 2026-03-17
 
 Initial release.

@@ -57,6 +57,23 @@ When in doubt: ask "Would this save meaningful time or prevent a mistake in a fu
 
 ---
 
+## Auto-Memory (Persistent User Context)
+
+Beyond the brain's entity types, maintain a personal memory layer that persists *how to work with this person* across all sessions:
+
+| Type | What it stores |
+|------|---------------|
+| `user` | Role, expertise, preferences — so you tailor responses correctly |
+| `feedback` | How to approach work — what to avoid, what to keep doing |
+| `project` | Active work state — who's involved, what's active, key constraints |
+| `reference` | Where things live in external systems — dashboards, trackers, repos |
+
+Store these in a dedicated memory directory (e.g., `~/.claude/memory/`) with a `MEMORY.md` index. Write to it proactively — when the user corrects your approach, when you learn their role, when project state changes.
+
+See: [[patterns/auto-memory|auto-memory]] for the full pattern and file format.
+
+---
+
 ## What Makes a Good Entity
 
 **Good:** Specific, captures *why* not just *what*, contains context that isn't obvious from the code or docs, stays useful after the context shifts.
@@ -75,6 +92,11 @@ brain_episode "What was worked on, what was decided, what was learned"
 ```
 
 Then check: did any decision, project context, or pattern change that needs a saved entity updated?
+
+If you maintain diagrams or process docs built from source files (decks, PDFs, data exports), check for staleness:
+- Each diagram should have a `sources:` field listing the source file(s) it was built from
+- Compare source file `mtime` against the diagram's `updated:` date
+- Flag any diagram where a source is newer than `updated:` as stale for next session
 
 ---
 
