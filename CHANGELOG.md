@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 — 2026-03-25
+
+### Bug fixes
+- **Singular entity paths** — `create_entity` and `list_entities` in `graph.py` now use singular type folder names (`topic/`, `person/`, `decision/`) instead of plural (`topics/`, `people/`, `decisions/`). Resolves folder fragmentation where entities were scattered across both plural and singular directories depending on whether they were created via CLI, MCP, or manually. `brain_save_entity` in the MCP server updated to match.
+- `DEFAULT_TYPES` constant updated to singular names throughout.
+- `cmd_init` creates singular folders on new brain initialization.
+
+### New commands
+- `brain stats` — prints total entity count, relation count, and a breakdown by entity type. Matches the `brain_stats` MCP tool which was already available to Claude Code but had no CLI equivalent.
+
+### Docs
+- README: added three Mermaid diagrams — **System Architecture** (how `~/knowledge/`, CLI, MCP, Obsidian, and Claude Code connect), **Session Lifecycle** (Orient → Work → Capture → Index loop), and **Entity & Relation Model** (all 8 types with example relation patterns).
+
 ## 0.2.0 — 2026-03-25
 
 ### New seed patterns
