@@ -59,7 +59,17 @@ That's the loop. Orient → work → capture. The brain compounds over time.
 
 ## The Core Habit
 
-The brain is only as useful as what you put in it. Three things make it work:
+The brain is only as useful as what you put in it. The loop is simple:
+
+```mermaid
+flowchart LR
+    A["🔍 Orient\nask Claude to search\nthe brain"] -->|session start| B["⚙️ Work\nClaude reads + writes\nentities as you go"]
+    B -->|session end| C["📝 Capture\nbrain episode\n+ save key entities"]
+    C -->|maintenance| D["🔗 Index\nbrain index\nbrain link"]
+    D -.->|next session| A
+```
+
+Three things make it compound over time:
 
 1. **Check before starting** — ask Claude to search the brain at the start of any substantive session
 2. **Capture decisions with reasoning** — not just what was decided, but why, and what alternatives were rejected
@@ -136,13 +146,32 @@ Your content here. Supports full markdown.
 - [[topics/neural-networks]]
 ```
 
-### Entity Types
+### Entity Types & Relations
 
-Built-in defaults: `topic`, `insight`, `decision`, `pattern`, `person`, `project`, `research`, `hypothesis`. Any string is accepted — unknown types pass through with a warning, not an error.
+```mermaid
+flowchart TD
+    project["📋 project"]
+    decision["✅ decision"]
+    topic["💡 topic"]
+    research["🔬 research"]
+    insight["✨ insight"]
+    pattern["🔁 pattern"]
+    person["👤 person"]
+    hypothesis["🧪 hypothesis"]
 
-### Relation Types
+    project -->|DEPENDS_ON| topic
+    decision -->|INFORMS| project
+    research -->|DERIVED_FROM| topic
+    insight -->|REFERENCES| topic
+    pattern -->|PART_OF| project
+    person -->|CREATED_BY| decision
+    hypothesis -->|CONTRADICTS| insight
+    insight -->|SUPERSEDED_BY| decision
+```
 
-`REFERENCES`, `INFORMS`, `DERIVED_FROM`, `SUPERSEDED_BY`, `CONTRADICTS`, `DEPENDS_ON`, `PART_OF`, `USES_TOPIC`, `CREATED_BY`. Any string accepted.
+Built-in types: `topic`, `insight`, `decision`, `pattern`, `person`, `project`, `research`, `hypothesis`. Any string is accepted — unknown types pass through with a warning, not an error.
+
+Built-in relation types: `REFERENCES`, `INFORMS`, `DERIVED_FROM`, `SUPERSEDED_BY`, `CONTRADICTS`, `DEPENDS_ON`, `PART_OF`, `USES_TOPIC`, `CREATED_BY`. Any string accepted.
 
 ## Semantic Search (optional)
 
@@ -154,6 +183,39 @@ brain semantic "deep learning architectures"
 Pulls `sentence-transformers` + `hnswlib` (~2GB). Core install is ~5MB (pyyaml only).
 
 ## Architecture
+
+```mermaid
+flowchart LR
+    subgraph brain ["~/knowledge/"]
+        direction TB
+        entities["entities/\nmarkdown + YAML frontmatter"]
+        episodes["episodes/\nYYYY-MM-DD.md"]
+        index["index.json\nsearch index"]
+    end
+
+    cli["brain CLI\n───────────────\ncreate · show · list\nsearch · episode\nindex · link · health"]
+
+    mcp["MCP Server\n───────────────\nbrain_search\nbrain_semantic_search\nbrain_save_entity\nbrain_entity\nbrain_episode\nbrain_mind_map\nbrain_stats"]
+
+    obs["Obsidian\n───────────────\nGraph View\n[[wikilinks]]"]
+
+    cc["Claude Code\n───────────────\nAll sessions\nAll projects"]
+
+    entities --> cli
+    entities --> mcp
+    entities --> obs
+    index --> cli
+    index --> mcp
+
+    cli --> cc
+    mcp --> cc
+
+    cc -->|"save entity"| entities
+    cc -->|"log episode"| episodes
+    cli -->|"brain index / link"| index
+```
+
+**Design principles:**
 
 - **File format IS the API.** No database. CLI, MCP, and Obsidian all read/write the same markdown files.
 - **Atomic writes** — entity files use `tempfile + os.replace`. No corruption on crash.
