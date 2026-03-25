@@ -178,6 +178,18 @@ Once you have a brain running, here are natural next steps roughly ordered by co
 - **Write a cron job** that runs `brain health` and `brain index` daily. Catch integrity issues early.
 - **Add `brain link`** to your post-session workflow so Obsidian wikilinks stay current.
 - **Build a session-start script** that runs `brain search` for the topic you're about to work on and dumps context into your terminal.
+- **Track diagram staleness** — add a `sources:` field to any diagram or process doc built from an external file (deck, PDF, export). Write a script that compares source `mtime` against the diagram's `updated:` date and surfaces stale ones. See the `diagram-freshness` seed pattern.
+
+### Week 4 — Skill/hook orchestration layer
+
+The brain is most powerful when it's part of an automated loop rather than something you remember to use. Claude Code's skills and hooks system lets you build this:
+
+- **Session-start hook** — reads the brain, writes a context cache file to the session environment, prints a brief of active projects and open items. No more re-explaining context at the start of every session.
+- **Session-close skill** — a `/session-close` command that orchestrates the full capture workflow: brain episode → entity updates → brain index → diagram staleness check → open items list. One command handles everything.
+- **Auto-memory layer** — maintain a separate `~/memory/` directory with 4 types: `user` (who you are, your role), `feedback` (how to work with you), `project` (active context), `reference` (where things live). Loaded at session start. Compounds faster than entity-level knowledge. See the `auto-memory` seed pattern.
+- **PostToolUse hooks** — fire checkpoints on every file write, invalidate context caches, keep the session environment fresh without manual intervention.
+
+This is the architecture where the brain stops being a tool you use and becomes infrastructure that just works.
 
 ### Beyond — Extension ideas
 - **Semantic search** — `pip install starter-brain[search]` adds embedding-based similarity. Good for "what do I know that's related to X?" when keywords aren't enough.
@@ -185,7 +197,7 @@ Once you have a brain running, here are natural next steps roughly ordered by co
 - **Multi-brain sync** — Run separate brains for different domains (work, personal, research). Build a merge tool that links entities across brains without copying content.
 - **Custom entity types** — The type system is open. Add `meeting`, `bug`, `experiment`, `contact`, `tool` — whatever maps to how you think.
 - **Contradiction detection** — Scan relations for entities that `CONTRADICTS` each other or where confidence scores diverge. Surface these for review.
-- **Dashboard** — Build a simple web UI over `brain_stats` + `brain_mind_map` to visualize your knowledge graph outside Obsidian.
+- **Dashboard** — Build a simple web UI over `brain_stats` + `brain_mind_map` to visualize your knowledge graph outside Obsidian. Feed it from a local server that reads `data.json` + entity files — add project status, weekly priorities, and a diagram viewer.
 
 ## Further Reading
 
