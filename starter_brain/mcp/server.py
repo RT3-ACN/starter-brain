@@ -7,7 +7,7 @@ from pathlib import Path
 
 import yaml
 
-from starter_brain.kg.graph import Brain, BrainError, pluralize_type, singularize_type
+from starter_brain.kg.graph import Brain, BrainError, singularize_type
 from starter_brain.kg.episodes import log_episode
 from starter_brain.kg.index import build_index
 from starter_brain.kg.links import regenerate_links
@@ -86,8 +86,7 @@ def handle_brain_save_entity(brain: Brain, kdir: Path, params: dict) -> dict:
     body = params.get("body", "")
 
     singular = singularize_type(entity_type)
-    plural = pluralize_type(singular)
-    entity_id = f"{plural}/{slug}"
+    entity_id = f"{singular}/{slug}"
     try:
         existing = brain.read_entity(entity_id)
         updated = brain.update_entity(entity_id, name=name, tags=tags, relations=relations, body=body)

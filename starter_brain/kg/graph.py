@@ -10,8 +10,8 @@ from typing import Any
 import yaml
 
 DEFAULT_TYPES = [
-    "topics", "insights", "research", "decisions",
-    "patterns", "people", "projects", "hypotheses",
+    "topic", "insight", "research", "decision",
+    "pattern", "person", "project", "hypothesis",
 ]
 
 # Irregular plurals — add entries here for new irregular types
@@ -101,8 +101,7 @@ class Brain:
         body: str = "",
     ) -> dict[str, Any]:
         singular = singularize_type(type)
-        plural = pluralize_type(singular)
-        entity_id = f"{plural}/{slug}"
+        entity_id = f"{singular}/{slug}"
         today = date.today().isoformat()
         meta = {
             "type": singular,
@@ -150,7 +149,7 @@ class Brain:
     def list_entities(self, type_filter: str | None = None) -> list[dict[str, Any]]:
         results = []
         if type_filter:
-            dirname = pluralize_type(type_filter)
+            dirname = singularize_type(type_filter)
             type_dir = self.entities_dir / dirname
             if not type_dir.exists():
                 return []

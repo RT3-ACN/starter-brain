@@ -41,7 +41,7 @@ def cmd_init(args):
 
     kdir.mkdir(parents=True, exist_ok=True)
     entities_dir = kdir / "entities"
-    for subdir in ["topics", "insights", "research", "decisions", "patterns", "people", "projects", "hypotheses"]:
+    for subdir in ["topic", "insight", "research", "decision", "pattern", "person", "project", "hypothesis"]:
         (entities_dir / subdir).mkdir(parents=True, exist_ok=True)
     (kdir / "episodes").mkdir(exist_ok=True)
 
@@ -233,6 +233,22 @@ def cmd_health(args):
     return 0 if report["ok"] else 1
 
 
+def cmd_stats(args):
+    brain = Brain(args.dir)
+    entities = brain.list_entities()
+    type_counts: dict[str, int] = {}
+    relation_count = 0
+    for e in entities:
+        t = e.get("type", "unknown")
+        type_counts[t] = type_counts.get(t, 0) + 1
+        relation_count += len(e.get("relations", []))
+    print(f"Entities: {len(entities)}  |  Relations: {relation_count}")
+    print()
+    for t, count in sorted(type_counts.items()):
+        print(f"  {t:20s} {count}")
+    return 0
+
+
 def cmd_map(args):
     brain = Brain(args.dir)
     try:
@@ -313,6 +329,7 @@ def main():
     sub.add_parser("link", help="Regenerate wikilinks", parents=[dir_parent])
     sub.add_parser("index", help="Rebuild index.json", parents=[dir_parent])
     sub.add_parser("health", help="Validate brain integrity", parents=[dir_parent])
+    sub.add_parser("stats", help="Entity and relation counts by type", parents=[dir_parent])
 
     p_mcp = sub.add_parser("mcp", help="MCP server", parents=[dir_parent])
     p_mcp.add_argument("action", choices=["serve"], help="MCP action")
@@ -334,6 +351,7 @@ def main():
         "link": cmd_link,
         "index": cmd_index,
         "health": cmd_health,
+        "stats": cmd_stats,
     }
 
     handler = commands.get(args.command)
