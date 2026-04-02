@@ -68,6 +68,9 @@ class Brain:
         meta = yaml.safe_load(parts[1]) or {}
         body = parts[2].lstrip("\n")
         meta["body"] = body
+        # Derive id from filepath when frontmatter omits it — filepath is canonical
+        if not meta.get("id"):
+            meta["id"] = str(path.relative_to(self.entities_dir).with_suffix(""))
         return meta
 
     def _write_entity(self, path: Path, meta: dict[str, Any], body: str) -> None:
